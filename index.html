@@ -236,12 +236,22 @@ var sa=st.sa[i],fa=st.fa[i];
 var co=(sa!==null&&fa!==null)?(sa===fa?"Oui":"Non"):"-";
 txt+=Q[i].s+";"+Q[i].ss+";"+Q[i].q+";"+(sa!==null?C[sa]:"(sans reponse)")+";"+(fa!==null?C[fa]:"(sans reponse)")+";"+co+"\n";
 }
+var fname="Evaluation_"+st.no+"_"+st.pr+".csv";
 var blob=new Blob(["\uFEFF"+txt],{type:"text/csv;charset=utf-8;"});
 var url=URL.createObjectURL(blob);
 var a=document.createElement("a"); a.href=url;
-a.download="Evaluation_"+st.no+"_"+st.pr+".csv";
+a.download=fname;
 document.body.appendChild(a); a.click(); document.body.removeChild(a);
 URL.revokeObjectURL(url);
+var dest="ludovic.bylos@isllg.be";
+var suj=encodeURIComponent("Evaluation de "+st.pr+" "+st.no+" - Formateur : "+st.fo);
+var bod=encodeURIComponent("Bonjour,");
+bod+="%0A%0A"+encodeURIComponent("Veuillez trouver ci-joint le fichier d evaluation de "+st.pr+" "+st.no+" (Formateur : "+st.fo+").");
+bod+="%0A%0A"+encodeURIComponent("Le fichier "+fname+" vient d etre telecharge sur votre appareil. Merci de le joindre a cet email avant d envoyer.");
+bod+="%0A%0A"+encodeURIComponent("Merci !");
+setTimeout(function(){
+window.location.href="mailto:"+dest+"?subject="+suj+"&body="+bod;
+},800);
 });
 
 function initF(){
