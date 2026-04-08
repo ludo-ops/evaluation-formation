@@ -1,519 +1,267 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="light">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Évaluation Stagiaire / Formateur</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=DM+Sans:opsz,wght@9..40,300..700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<title>EvalPro</title>
 <style>
-:root, [data-theme="light"] {
-  --color-bg: #f7f6f2; --color-surface: #f9f8f5; --color-surface-2: #fbfbf9;
-  --color-surface-offset: #f3f0ec; --color-surface-offset-2: #edeae5;
-  --color-surface-dynamic: #e6e4df; --color-divider: #dcd9d5; --color-border: #d4d1ca;
-  --color-text: #28251d; --color-text-muted: #7a7974; --color-text-faint: #bab9b4;
-  --color-text-inverse: #f9f8f4;
-  --color-primary: #01696f; --color-primary-hover: #0c4e54; --color-primary-active: #0f3638;
-  --color-primary-highlight: #cedcd8;
-  --color-success: #437a22; --color-success-hover: #2e5c10;
-  --color-success-highlight: #d4dfcc;
-  --color-error: #a12c7b; --color-error-highlight: #e0ced7;
-  --color-warning: #964219; --color-warning-highlight: #ddcfc6;
-  --shadow-sm: 0 1px 2px rgba(40,37,29,0.06); --shadow-md: 0 4px 12px rgba(40,37,29,0.08);
-  --shadow-lg: 0 12px 32px rgba(40,37,29,0.12);
-  --radius-sm: 0.375rem; --radius-md: 0.5rem; --radius-lg: 0.75rem;
-  --radius-xl: 1rem; --radius-full: 9999px;
-  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;
-  --space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;
-  --space-12:3rem;--space-16:4rem;
-  --text-xs:clamp(0.75rem,0.7rem + 0.25vw,0.875rem);
-  --text-sm:clamp(0.875rem,0.8rem + 0.35vw,1rem);
-  --text-base:clamp(1rem,0.95rem + 0.25vw,1.125rem);
-  --text-lg:clamp(1.125rem,1rem + 0.75vw,1.5rem);
-  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
-  --transition:180ms cubic-bezier(0.16,1,0.3,1);
-  --font-body:'Inter','DM Sans',sans-serif; --font-display:'DM Sans','Inter',sans-serif;
-}
-[data-theme="dark"] {
-  --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
-  --color-surface-offset:#1d1c1a;--color-surface-offset-2:#22211f;
-  --color-surface-dynamic:#2d2c2a;--color-divider:#262523;--color-border:#393836;
-  --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#5a5957;
-  --color-text-inverse:#2b2a28;
-  --color-primary:#4f98a3;--color-primary-hover:#227f8b;--color-primary-active:#1a626b;
-  --color-primary-highlight:#313b3b;
-  --color-success:#6daa45;--color-success-hover:#4d8f25;--color-success-highlight:#3a4435;
-  --color-error:#d163a7;--color-error-highlight:#4c3d46;
-  --color-warning:#bb653b;--color-warning-highlight:#564942;
-  --shadow-sm:0 1px 2px rgba(0,0,0,0.2);--shadow-md:0 4px 12px rgba(0,0,0,0.3);
-  --shadow-lg:0 12px 32px rgba(0,0,0,0.4);
-}
-@media(prefers-color-scheme:dark){:root:not([data-theme]){
-  --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
-  --color-surface-offset:#1d1c1a;--color-divider:#262523;--color-border:#393836;
-  --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#5a5957;
-  --color-primary:#4f98a3;--color-primary-hover:#227f8b;
-  --color-success:#6daa45;--color-success-highlight:#3a4435;
-  --color-error:#d163a7;--color-error-highlight:#4c3d46;
-}}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;}
-body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);line-height:1.6;}
-h1,h2,h3,h4{font-family:var(--font-display);line-height:1.15;}
-input,button,select{font:inherit;color:inherit;}
-button{cursor:pointer;background:none;border:none;}
-::selection{background:rgba(1,105,111,0.2);}
-:focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm);}
-a,button,[role="button"],input,select{transition:color var(--transition),background var(--transition),border-color var(--transition),box-shadow var(--transition);}
-
-.app-header{position:sticky;top:0;z-index:100;background:var(--color-surface);border-bottom:1px solid var(--color-border);box-shadow:var(--shadow-sm);padding:var(--space-3) var(--space-6);display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);}
-.logo{display:flex;align-items:center;gap:var(--space-3);}
-.logo-icon{width:36px;height:36px;flex-shrink:0;}
-.logo-text{font-size:var(--text-lg);font-weight:700;color:var(--color-text);}
-.logo-text span{color:var(--color-primary);}
-.header-right{display:flex;align-items:center;gap:var(--space-3);}
-.mode-badge{font-size:var(--text-xs);font-weight:600;padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);letter-spacing:.04em;text-transform:uppercase;}
-.mode-badge.stagiaire{background:var(--color-primary-highlight);color:var(--color-primary-active);}
-.mode-badge.formateur{background:var(--color-success-highlight);color:var(--color-success-hover);}
-.theme-toggle{width:36px;height:36px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);}
-.theme-toggle:hover{background:var(--color-surface-offset);color:var(--color-text);}
-.main{max-width:1100px;margin-inline:auto;padding:var(--space-8) var(--space-6);}
-
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;font-size:15px;background:#f4f4f0;color:#222;}
+header{background:#01696f;color:#fff;padding:14px 24px;}
+header h1{font-size:20px;}
+main{max-width:1000px;margin:0 auto;padding:32px 16px;}
+.card{max-width:420px;margin:40px auto;background:#fff;border:1px solid #ddd;border-radius:12px;padding:36px;}
+.card h2{font-size:20px;margin-bottom:20px;}
+.fg{margin-bottom:16px;}
+.fg label{display:block;font-weight:700;font-size:13px;margin-bottom:5px;}
+.fg input,.fg select{width:100%;padding:9px 12px;border:1px solid #ccc;border-radius:7px;font-size:14px;}
+.err{background:#fce;color:#700;padding:9px 12px;border-radius:7px;font-size:13px;margin-bottom:14px;display:none;}
+.btn{display:inline-block;padding:10px 22px;border:none;border-radius:7px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;text-align:center;}
+.bp{background:#01696f;color:#fff;width:100%;}
+.bp:hover{background:#0c4e54;}
+.bs{background:#437a22;color:#fff;}
+.bs:hover{background:#2e5c10;}
+.qh{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.qi{font-size:13px;color:#555;}
+.qi strong{color:#222;}
+.pl{font-size:12px;color:#777;margin-bottom:3px;}
+.pb{height:6px;background:#e0e0e0;border-radius:99px;width:180px;}
+.pf{height:100%;background:#01696f;border-radius:99px;transition:width .3s;}
+.st{background:#01696f;color:#fff;padding:10px 18px;border-radius:8px;font-size:15px;font-weight:700;margin-top:24px;margin-bottom:3px;}
+.st:first-child{margin-top:0;}
+.ss{background:#cedcd8;color:#0c4e54;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:700;margin-top:12px;margin-bottom:3px;border-left:4px solid #01696f;}
+.ch{display:grid;grid-template-columns:1fr 200px 200px;gap:8px;padding:6px 12px;font-size:11px;font-weight:700;text-transform:uppercase;color:#999;}
+.qr{display:grid;grid-template-columns:1fr 200px 200px;gap:8px;padding:12px;background:#fff;border:1px solid #ddd;border-radius:7px;margin-bottom:5px;}
+.qt{font-size:13px;color:#333;}
+.rg{display:flex;flex-direction:column;gap:5px;}
+.rl{background:#f5f5f5;border:1px dashed #ccc;border-radius:6px;padding:6px;}
+.ro{display:flex;align-items:flex-start;gap:7px;padding:3px 5px;border-radius:5px;cursor:pointer;}
+.ro:hover{background:#f0f0f0;}
+.rl .ro{pointer-events:none;}
+.ro input{margin-top:2px;accent-color:#01696f;width:14px;height:14px;flex-shrink:0;}
+.ro span{font-size:12px;color:#666;line-height:1.3;}
+.ro input:checked + span{color:#111;font-weight:700;}
+.ln{font-size:11px;color:#aaa;text-align:center;padding:5px 3px;}
+.act{position:sticky;bottom:0;background:#fff;border-top:1px solid #ddd;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 -3px 10px rgba(0,0,0,.06);}
+.act span{font-size:12px;color:#999;}
+.mb80{padding-bottom:80px;}
+.cc{max-width:460px;margin:60px auto;background:#fff;border:1px solid #ddd;border-radius:12px;padding:36px;text-align:center;}
+.cc .ic{font-size:44px;margin-bottom:14px;}
+.cc h2{font-size:18px;margin-bottom:10px;}
+.cc p{font-size:13px;color:#666;margin-bottom:16px;}
+.mb{background:#e8f4f3;border:1px solid #01696f;border-radius:8px;padding:18px;margin-bottom:16px;}
+.mb p{font-size:13px;font-weight:700;color:#0c4e54;margin-bottom:10px;}
+.hint{font-size:11px;color:#bbb;}
 .view{display:none;}.view.active{display:block;}
-
-.landing-card{max-width:480px;margin-inline:auto;margin-top:var(--space-10);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-10);box-shadow:var(--shadow-md);}
-.landing-card h1{font-size:var(--text-xl);margin-bottom:var(--space-2);}
-.landing-card .subtitle{color:var(--color-text-muted);font-size:var(--text-sm);margin-bottom:var(--space-8);}
-.form-group{margin-bottom:var(--space-5);}
-.form-group label{display:block;font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-2);}
-.form-group input,.form-group select{width:100%;padding:var(--space-3) var(--space-4);border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-bg);color:var(--color-text);font-size:var(--text-base);}
-.form-group input:focus,.form-group select:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(1,105,111,0.15);outline:none;}
-.form-group input::placeholder{color:var(--color-text-faint);}
-
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);padding:var(--space-3) var(--space-6);border-radius:var(--radius-md);font-size:var(--text-sm);font-weight:600;cursor:pointer;border:none;text-decoration:none;}
-.btn-primary{background:var(--color-primary);color:#fff;box-shadow:var(--shadow-sm);}
-.btn-primary:hover{background:var(--color-primary-hover);box-shadow:var(--shadow-md);}
-.btn-primary:active{background:var(--color-primary-active);}
-.btn-success{background:var(--color-success);color:#fff;box-shadow:var(--shadow-sm);}
-.btn-success:hover{background:var(--color-success-hover);box-shadow:var(--shadow-md);}
-.btn-full{width:100%;}
-.btn:disabled{opacity:.5;cursor:not-allowed;}
-
-.questionnaire-header{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5) var(--space-6);margin-bottom:var(--space-6);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-3);box-shadow:var(--shadow-sm);}
-.stagiaire-info{font-size:var(--text-sm);color:var(--color-text-muted);}
-.stagiaire-info strong{color:var(--color-text);font-weight:600;}
-.progress-bar-wrap{flex:1;min-width:160px;}
-.progress-label{font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-1);}
-.progress-bar{height:6px;background:var(--color-surface-dynamic);border-radius:var(--radius-full);overflow:hidden;}
-.progress-fill{height:100%;background:var(--color-primary);border-radius:var(--radius-full);transition:width .3s ease;}
-
-.section-header{background:var(--color-primary);color:#fff;padding:var(--space-4) var(--space-6);border-radius:var(--radius-lg);margin-top:var(--space-8);margin-bottom:var(--space-1);font-size:var(--text-lg);font-weight:700;}
-.section-header:first-child{margin-top:0;}
-.subsection-header{background:var(--color-primary-highlight);color:var(--color-primary-active);padding:var(--space-3) var(--space-6);border-radius:var(--radius-md);margin-top:var(--space-4);margin-bottom:var(--space-1);font-size:var(--text-base);font-weight:600;border-left:4px solid var(--color-primary);}
-
-.table-header{display:grid;grid-template-columns:1fr 200px 200px;gap:var(--space-2);padding:var(--space-3) var(--space-4);font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-muted);border-bottom:1px solid var(--color-border);margin-bottom:var(--space-1);}
-@media(max-width:768px){.table-header{display:none;}}
-
-.question-row{display:grid;grid-template-columns:1fr 200px 200px;gap:var(--space-2);padding:var(--space-4);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);margin-bottom:var(--space-2);}
-.question-row:hover{box-shadow:var(--shadow-sm);}
-@media(max-width:768px){.question-row{grid-template-columns:1fr;gap:var(--space-3);}}
-.question-text{font-size:var(--text-sm);color:var(--color-text);padding-right:var(--space-2);display:flex;align-items:flex-start;padding-top:2px;}
-
-.radio-group{display:flex;flex-direction:column;gap:var(--space-2);}
-.radio-col-locked{background:var(--color-surface-offset);border-radius:var(--radius-md);padding:var(--space-2);border:1px dashed var(--color-border);}
-.radio-col-locked .radio-group{opacity:.75;}
-.radio-option{display:flex;align-items:flex-start;gap:var(--space-2);cursor:pointer;padding:var(--space-1) var(--space-2);border-radius:var(--radius-sm);}
-.radio-option:hover{background:var(--color-surface-offset);}
-.radio-col-locked .radio-option{cursor:default;pointer-events:none;}
-.radio-option input[type="radio"]{margin-top:3px;accent-color:var(--color-primary);flex-shrink:0;width:16px;height:16px;}
-.radio-option span{font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.4;}
-.radio-option input[type="radio"]:checked + span{color:var(--color-text);font-weight:600;}
-.locked-label{font-size:var(--text-xs);color:var(--color-text-faint);text-align:center;padding:var(--space-2) var(--space-1);letter-spacing:.03em;}
-
-.question-row.concordant{border-color:rgba(67,122,34,.4);}
-.question-row.discordant{border-color:rgba(150,66,25,.4);}
-
-/* Confirmation */
-.confirmation-card{max-width:520px;margin-inline:auto;margin-top:var(--space-10);text-align:center;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-10);box-shadow:var(--shadow-md);}
-.confirmation-icon{font-size:3rem;margin-bottom:var(--space-4);}
-.confirmation-card h2{font-size:var(--text-lg);margin-bottom:var(--space-4);}
-.confirmation-card p{color:var(--color-text-muted);font-size:var(--text-sm);margin-bottom:var(--space-6);}
-.mailto-box{background:var(--color-primary-highlight);border:1px solid var(--color-primary);border-radius:var(--radius-lg);padding:var(--space-5);margin-bottom:var(--space-6);}
-.mailto-box p{color:var(--color-primary-active);font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-3);}
-.mailto-box .btn{width:100%;font-size:var(--text-base);}
-
-.actions-bar{position:sticky;bottom:0;background:var(--color-surface);border-top:1px solid var(--color-border);padding:var(--space-4) var(--space-6);display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);box-shadow:0 -4px 16px rgba(40,37,29,.06);flex-wrap:wrap;}
-.actions-info{font-size:var(--text-sm);color:var(--color-text-muted);}
-.actions-buttons{display:flex;gap:var(--space-3);}
-
-.alert{padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);font-size:var(--text-sm);margin-bottom:var(--space-4);}
-.alert-error{background:var(--color-error-highlight);color:#6b1a4f;}
-[data-theme="dark"] .alert-error{color:#f0a0d0;}
-
-.questionnaire-scroll{padding-bottom:var(--space-16);}
-@media(max-width:480px){
-  .main{padding:var(--space-4) var(--space-3);}
-  .landing-card{padding:var(--space-6);margin-top:var(--space-6);}
-  .app-header{padding:var(--space-3);}
-}
+@media(max-width:650px){.ch{display:none;}.qr{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
+<header><h1>EvalPro</h1></header>
+<main>
 
-<header class="app-header">
-  <div class="logo">
-    <svg class="logo-icon" viewBox="0 0 36 36" fill="none" aria-label="EvalPro logo" xmlns="http://www.w3.org/2000/svg">
-      <rect width="36" height="36" rx="8" fill="var(--color-primary)"/>
-      <rect x="7" y="9" width="9" height="4" rx="1.5" fill="white" opacity=".9"/>
-      <rect x="7" y="16" width="14" height="4" rx="1.5" fill="white" opacity=".7"/>
-      <rect x="7" y="23" width="11" height="4" rx="1.5" fill="white" opacity=".5"/>
-      <rect x="21" y="9" width="8" height="4" rx="1.5" fill="white" opacity=".4"/>
-      <rect x="25" y="16" width="4" height="11" rx="1.5" fill="white" opacity=".65"/>
-    </svg>
-    <span class="logo-text">Éval<span>Pro</span></span>
-  </div>
-  <div class="header-right">
-    <span class="mode-badge stagiaire" id="modeBadge" style="display:none;"></span>
-    <button class="theme-toggle" data-theme-toggle aria-label="Changer de thème">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    </button>
-  </div>
-</header>
-
-<main class="main">
-
-<!-- ACCUEIL -->
-<div class="view active" id="view-accueil">
-  <div class="landing-card">
-    <h1>Évaluation de formation</h1>
-    <p class="subtitle">Renseignez vos informations pour commencer votre auto-évaluation.</p>
-    <div id="accueil-alert" style="display:none;"></div>
-    <div class="form-group">
-      <label for="input-prenom">Prénom</label>
-      <input type="text" id="input-prenom" placeholder="Votre prénom" autocomplete="given-name">
-    </div>
-    <div class="form-group">
-      <label for="input-nom">Nom</label>
-      <input type="text" id="input-nom" placeholder="Votre nom de famille" autocomplete="family-name">
-    </div>
-    <div class="form-group">
-      <label for="input-formateur">Formateur</label>
-      <select id="input-formateur">
-        <option value="">— Sélectionnez votre formateur —</option>
-        <option value="Ludo" data-email="ludolud121@gmail.com">Ludo</option>
-        <option value="Mich" data-email="bylosludo@gmail.com">Mich</option>
-        <option value="Alex" data-email="ludovicbylos121@gmail.com">Alex</option>
-      </select>
-    </div>
-    <button class="btn btn-primary btn-full" id="btn-start">Commencer l'évaluation →</button>
-  </div>
+<div class="view active" id="v1">
+<div class="card">
+<h2>Evaluation de formation</h2>
+<div class="err" id="err"></div>
+<div class="fg"><label>Prenom</label><input type="text" id="ipr" placeholder="Votre prenom"></div>
+<div class="fg"><label>Nom</label><input type="text" id="ino" placeholder="Votre nom"></div>
+<div class="fg"><label>Formateur</label>
+<select id="ifo">
+<option value="">-- Selectionnez --</option>
+<option value="Ludo" data-email="ludolud121@gmail.com">Ludo</option>
+<option value="Mich" data-email="bylosludo@gmail.com">Mich</option>
+<option value="Alex" data-email="ludovicbylos121@gmail.com">Alex</option>
+</select></div>
+<button class="btn bp" id="btnS">Commencer l'evaluation</button>
+</div>
 </div>
 
-<!-- STAGIAIRE -->
-<div class="view" id="view-stagiaire">
-  <div class="questionnaire-header">
-    <div class="stagiaire-info" id="header-info-stagiaire"></div>
-    <div class="progress-bar-wrap">
-      <div class="progress-label" id="progress-label">0 / 7 questions répondues</div>
-      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-    </div>
-  </div>
-  <div class="questionnaire-scroll" id="questionnaire-stagiaire"></div>
-  <div class="actions-bar">
-    <span class="actions-info">Répondez à toutes les questions avant de soumettre.</span>
-    <div class="actions-buttons">
-      <button class="btn btn-primary" id="btn-submit-stagiaire">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
-        Soumettre mes réponses
-      </button>
-    </div>
-  </div>
+<div class="view" id="v2">
+<div class="qh">
+<div class="qi" id="is"></div>
+<div><div class="pl" id="pl1">0 / 7</div><div class="pb"><div class="pf" id="pf1" style="width:0%"></div></div></div>
+</div>
+<div class="mb80" id="ql1"></div>
+<div class="act"><span>Repondez a toutes les questions.</span><button class="btn bp" id="btnSub">Soumettre</button></div>
 </div>
 
-<!-- CONFIRMATION + BOUTON MAILTO -->
-<div class="view" id="view-confirmation">
-  <div class="confirmation-card">
-    <div class="confirmation-icon">📋</div>
-    <h2>Réponses prêtes à envoyer !</h2>
-    <p>Vos réponses ont été préparées. Cliquez sur le bouton ci-dessous pour ouvrir votre application mail et envoyer automatiquement le lien à votre formateur.</p>
-    <div class="mailto-box">
-      <p>📧 Cliquez pour envoyer l'email à votre formateur</p>
-      <a class="btn btn-primary" id="mailto-link" href="#">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
-        Ouvrir mon application mail
-      </a>
-    </div>
-    <p style="font-size:var(--text-xs);color:var(--color-text-faint);">Fonctionne avec Gmail, Outlook, iPhone Mail et toute autre messagerie installée sur votre appareil.</p>
-  </div>
+<div class="view" id="v3">
+<div class="cc">
+<div class="ic">&#128203;</div>
+<h2>Reponses pretes !</h2>
+<p>Cliquez ci-dessous pour ouvrir votre messagerie. L'email est deja redige avec le lien pour votre formateur.</p>
+<div class="mb"><p>Envoyer l'email a votre formateur</p>
+<a class="btn bp" id="mla" href="#">Ouvrir mon application mail</a></div>
+<p class="hint">Compatible Gmail, Outlook, iPhone Mail et toute messagerie installee.</p>
+</div>
 </div>
 
-<!-- FORMATEUR -->
-<div class="view" id="view-formateur">
-  <div class="questionnaire-header">
-    <div class="stagiaire-info" id="header-info-formateur"></div>
-    <div class="progress-bar-wrap">
-      <div class="progress-label" id="progress-label-f">0 / 7 questions évaluées</div>
-      <div class="progress-bar"><div class="progress-fill" id="progress-fill-f" style="width:0%"></div></div>
-    </div>
-  </div>
-  <div class="questionnaire-scroll" id="questionnaire-formateur"></div>
-  <div class="actions-bar">
-    <span class="actions-info">Mode Formateur — Réponses du stagiaire en lecture seule.</span>
-    <div class="actions-buttons">
-      <button class="btn btn-success" id="btn-export">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Exporter en Excel
-      </button>
-    </div>
-  </div>
+<div class="view" id="v4">
+<div class="qh">
+<div class="qi" id="iff"></div>
+<div><div class="pl" id="pl2">0 / 7</div><div class="pb"><div class="pf" id="pf2" style="width:0%"></div></div></div>
+</div>
+<div class="mb80" id="ql2"></div>
+<div class="act"><span>Mode Formateur - Stagiaire en lecture seule.</span><button class="btn bs" id="btnEx">Exporter en Excel</button></div>
 </div>
 
 </main>
-
 <script>
-const CHOICES = [
-  "Je ne vois pas de quoi il s'agit",
-  "J'ai compris le principe",
-  "Je le fais avec le formateur",
-  "Je le fais en autonomie"
+var C=["Je ne vois pas de quoi il s agit","J ai compris le principe","Je le fais avec le formateur","Je le fais en autonomie"];
+var Q=[
+{s:"Section 1 - Les savoir-faire comportementaux",ss:"1.1 - Avoir une presentation adequate",q:"Avoir une presentation adequate au metier de la construction"},
+{s:"Section 1 - Les savoir-faire comportementaux",ss:"1.1 - Avoir une presentation adequate",q:"Porter les equipements de protections individuelles obligatoires"},
+{s:"Section 1 - Les savoir-faire comportementaux",ss:"1.2 - Etre capable de s organiser",q:"Adapter et organiser sa vie privee en fonction de ses horaires de formation, de stages et de travail"},
+{s:"Section 1 - Les savoir-faire comportementaux",ss:"1.2 - Etre capable de s organiser",q:"Organiser sa mobilite en fonction des exigences de la formation, du stage et du travail"},
+{s:"Section 1 - Les savoir-faire comportementaux",ss:"1.2 - Etre capable de s organiser",q:"Prevenir en cas de retard ou d absence et fournir un justificatif"},
+{s:"Section 1 - Les savoir-faire comportementaux",ss:"1.2 - Etre capable de s organiser",q:"Etre present tous les jours"},
+{s:"Section 1 - Les savoir-faire comportementaux",ss:"1.2 - Etre capable de s organiser",q:"Etre ponctuel durant toute la journee"}
 ];
-const QUESTIONNAIRE = [
-  {
-    section: "Section 1 — Les savoir-faire comportementaux",
-    subsections: [
-      {
-        title: "1.1 — Avoir une présentation adéquate",
-        questions: [
-          "Avoir une présentation adéquate au métier de la construction",
-          "Porter les équipements de protections individuelles obligatoires"
-        ]
-      },
-      {
-        title: "1.2 — Être capable de s'organiser dans sa vie personnelle et de s'adapter",
-        questions: [
-          "Adapter et organiser sa vie privée en fonction de ses horaires de formation, de stages et de travail",
-          "Organiser sa mobilité en fonction des exigences de la formation, du stage et du travail",
-          "Prévenir en cas de retard ou d'absence et fournir un justificatif",
-          "Être présent tous les jours",
-          "Être ponctuel durant toute la journée"
-        ]
-      }
-    ]
-  }
-];
-const FLAT_QUESTIONS = [];
-QUESTIONNAIRE.forEach(sec => {
-  sec.subsections.forEach(sub => {
-    sub.questions.forEach(q => FLAT_QUESTIONS.push({ section: sec.section, subsection: sub.title, question: q }));
-  });
+var T=Q.length;
+var st={pr:"",no:"",fo:"",em:"",sa:[],fa:[]};
+
+function sv(id){
+var all=document.querySelectorAll(".view");
+for(var i=0;i<all.length;i++) all[i].classList.remove("active");
+document.getElementById(id).classList.add("active");
+}
+
+function upS(){
+var n=0; for(var i=0;i<T;i++) if(st.sa[i]!==null) n++;
+document.getElementById("pl1").textContent=n+" / "+T+" repondues";
+document.getElementById("pf1").style.width=Math.round(n/T*100)+"%";
+}
+
+function upF(){
+var n=0; for(var i=0;i<T;i++) if(st.fa[i]!==null) n++;
+document.getElementById("pl2").textContent=n+" / "+T+" evaluees";
+document.getElementById("pf2").style.width=Math.round(n/T*100)+"%";
+}
+
+function buildQ(cid,mode){
+var c=document.getElementById(cid);
+c.innerHTML="";
+var lS="",lSS="";
+var ch=document.createElement("div"); ch.className="ch";
+ch.innerHTML="<div>Question</div><div>Stagiaire</div><div>Formateur</div>";
+c.appendChild(ch);
+for(var i=0;i<T;i++){
+var item=Q[i];
+if(item.s!==lS){var s=document.createElement("div");s.className="st";s.textContent=item.s;c.appendChild(s);lS=item.s;}
+if(item.ss!==lSS){var sb=document.createElement("div");sb.className="ss";sb.textContent=item.ss;c.appendChild(sb);lSS=item.ss;}
+var row=document.createElement("div"); row.className="qr"; row.id="r"+i;
+var qt=document.createElement("div"); qt.className="qt"; qt.textContent=item.q;
+row.appendChild(qt);
+row.appendChild(buildCol(i,"s",mode==="formateur"));
+row.appendChild(buildCol(i,"f",mode==="stagiaire"));
+c.appendChild(row);
+}
+}
+
+function buildCol(idx,who,locked){
+var wrap=document.createElement("div");
+if(locked) wrap.className="rl";
+if(locked&&who==="f"){wrap.innerHTML="<div class='ln'>Reserve au formateur</div>";return wrap;}
+var grp=document.createElement("div"); grp.className="rg";
+var ans=who==="s"?st.sa:st.fa;
+var nm=who+idx;
+for(var ci=0;ci<C.length;ci++){
+(function(ci2){
+var lbl=document.createElement("label"); lbl.className="ro";
+var r=document.createElement("input"); r.type="radio"; r.name=nm; r.value=ci2;
+if(locked) r.disabled=true;
+if(ans[idx]===ci2) r.checked=true;
+if(!locked){
+r.addEventListener("change",function(){
+if(who==="s"){st.sa[idx]=ci2;upS();}
+else{st.fa[idx]=ci2;upF();
+var row=document.getElementById("r"+idx);
+row.classList.remove("ok","diff");
+if(st.sa[idx]!==null) row.classList.add(st.sa[idx]===ci2?"ok":"diff");
+}
 });
-const TOTAL = FLAT_QUESTIONS.length;
-
-let state = {
-  prenom:"",nom:"",formateur:"",formateurEmail:"",
-  stagiaireAnswers: new Array(TOTAL).fill(null),
-  formateurAnswers: new Array(TOTAL).fill(null)
-};
-
-// THEME
-(function(){
-  const t=document.querySelector("[data-theme-toggle]"),r=document.documentElement;
-  let d=matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";
-  r.setAttribute("data-theme",d);
-  const moon=`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
-  const sun=`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
-  if(t){
-    t.innerHTML=d==="dark"?sun:moon;
-    t.addEventListener("click",()=>{d=d==="dark"?"light":"dark";r.setAttribute("data-theme",d);t.innerHTML=d==="dark"?sun:moon;});
-  }
-})();
-
-function showView(id){
-  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
-  document.getElementById("view-"+id).classList.add("active");
-  const badge=document.getElementById("modeBadge");
-  if(id==="stagiaire"){badge.style.display="";badge.className="mode-badge stagiaire";badge.textContent="Mode Stagiaire";}
-  else if(id==="formateur"){badge.style.display="";badge.className="mode-badge formateur";badge.textContent="Mode Formateur";}
-  else badge.style.display="none";
+}
+var sp=document.createElement("span"); sp.textContent=C[ci2];
+lbl.appendChild(r); lbl.appendChild(sp); grp.appendChild(lbl);
+})(ci);
+}
+if(locked&&who==="s"){wrap.appendChild(grp);var n=document.createElement("div");n.className="ln";n.textContent="Lecture seule";wrap.appendChild(n);}
+else{wrap.appendChild(grp);}
+return wrap;
 }
 
-function renderQuestionnaire(containerId, mode){
-  const container=document.getElementById(containerId);
-  container.innerHTML="";
-  let qIndex=0;
-  QUESTIONNAIRE.forEach(sec=>{
-    const secEl=document.createElement("div");secEl.className="section-header";secEl.textContent=sec.section;
-    container.appendChild(secEl);
-    const th=document.createElement("div");th.className="table-header";
-    th.innerHTML="<div>Question</div><div>Stagiaire</div><div>Formateur</div>";
-    container.appendChild(th);
-    sec.subsections.forEach(sub=>{
-      const subEl=document.createElement("div");subEl.className="subsection-header";subEl.textContent=sub.title;
-      container.appendChild(subEl);
-      sub.questions.forEach(q=>{
-        const idx=qIndex;
-        const row=document.createElement("div");row.className="question-row";row.dataset.index=idx;
-        const qtd=document.createElement("div");qtd.className="question-text";qtd.textContent=q;
-        const stagCol=document.createElement("div");
-        if(mode==="formateur")stagCol.className="radio-col-locked";
-        stagCol.appendChild(buildRadioGroup("stag_"+idx,idx,"stagiaire",mode==="formateur"));
-        if(mode==="formateur"){const lbl=document.createElement("div");lbl.className="locked-label";lbl.textContent="🔒 Lecture seule";stagCol.appendChild(lbl);}
-        const formCol=document.createElement("div");
-        if(mode==="stagiaire"){formCol.className="radio-col-locked";formCol.innerHTML='<div class="locked-label">🔒 Réservé au formateur</div>';}
-        else formCol.appendChild(buildRadioGroup("form_"+idx,idx,"formateur",false));
-        row.appendChild(qtd);row.appendChild(stagCol);row.appendChild(formCol);
-        container.appendChild(row);
-        qIndex++;
-      });
-    });
-  });
-}
-
-function buildRadioGroup(name,idx,who,readonly){
-  const group=document.createElement("div");group.className="radio-group";
-  CHOICES.forEach((choice,ci)=>{
-    const label=document.createElement("label");label.className="radio-option";
-    const radio=document.createElement("input");radio.type="radio";radio.name=name;radio.value=ci;
-    if(readonly)radio.disabled=true;
-    const answers=who==="stagiaire"?state.stagiaireAnswers:state.formateurAnswers;
-    if(answers[idx]===ci)radio.checked=true;
-    if(!readonly){
-      radio.addEventListener("change",()=>{
-        if(who==="stagiaire"){state.stagiaireAnswers[idx]=ci;updateProgress();}
-        else{state.formateurAnswers[idx]=ci;updateProgressFormateur();updateConcordance(idx);}
-      });
-    }
-    const span=document.createElement("span");span.textContent=choice;
-    label.appendChild(radio);label.appendChild(span);group.appendChild(label);
-  });
-  return group;
-}
-
-function updateProgress(){
-  const n=state.stagiaireAnswers.filter(a=>a!==null).length;
-  document.getElementById("progress-label").textContent=n+" / "+TOTAL+" questions répondues";
-  document.getElementById("progress-fill").style.width=(n/TOTAL*100)+"%";
-}
-function updateProgressFormateur(){
-  const n=state.formateurAnswers.filter(a=>a!==null).length;
-  document.getElementById("progress-label-f").textContent=n+" / "+TOTAL+" questions évaluées";
-  document.getElementById("progress-fill-f").style.width=(n/TOTAL*100)+"%";
-}
-function updateConcordance(idx){
-  document.querySelectorAll("#questionnaire-formateur .question-row").forEach(row=>{
-    const i=parseInt(row.dataset.index);
-    if(idx===undefined||i===idx){
-      const s=state.stagiaireAnswers[i],f=state.formateurAnswers[i];
-      row.classList.remove("concordant","discordant");
-      if(s!==null&&f!==null)row.classList.add(s===f?"concordant":"discordant");
-    }
-  });
-}
-
-// ACCUEIL
-document.getElementById("btn-start").addEventListener("click",()=>{
-  const prenom=document.getElementById("input-prenom").value.trim();
-  const nom=document.getElementById("input-nom").value.trim();
-  const sel=document.getElementById("input-formateur");
-  const formateur=sel.value;
-  const formateurEmail=sel.options[sel.selectedIndex]?.dataset?.email||"";
-  const alertEl=document.getElementById("accueil-alert");
-  if(!prenom||!nom||!formateur){
-    alertEl.style.display="";alertEl.className="alert alert-error";
-    alertEl.textContent="Veuillez remplir tous les champs avant de continuer.";return;
-  }
-  alertEl.style.display="none";
-  state.prenom=prenom;state.nom=nom;state.formateur=formateur;state.formateurEmail=formateurEmail;
-  state.stagiaireAnswers=new Array(TOTAL).fill(null);
-  document.getElementById("header-info-stagiaire").innerHTML=
-    "Stagiaire : <strong>"+prenom+" "+nom+"</strong> &nbsp;|&nbsp; Formateur : <strong>"+formateur+"</strong>";
-  renderQuestionnaire("questionnaire-stagiaire","stagiaire");
-  showView("stagiaire");updateProgress();
+document.getElementById("btnS").addEventListener("click",function(){
+var pr=document.getElementById("ipr").value.trim();
+var no=document.getElementById("ino").value.trim();
+var sel=document.getElementById("ifo");
+var fo=sel.value;
+var opt=sel.options[sel.selectedIndex];
+var em=opt?opt.getAttribute("data-email"):"";
+var er=document.getElementById("err");
+if(!pr||!no||!fo){er.style.display="block";er.textContent="Veuillez remplir tous les champs.";return;}
+er.style.display="none";
+st.pr=pr;st.no=no;st.fo=fo;st.em=em||"";
+st.sa=[];st.fa=[];
+for(var i=0;i<T;i++){st.sa.push(null);st.fa.push(null);}
+document.getElementById("is").innerHTML="Stagiaire : <strong>"+pr+" "+no+"</strong> | Formateur : <strong>"+fo+"</strong>";
+buildQ("ql1","stagiaire");
+upS();
+sv("v2");
+window.scrollTo(0,0);
 });
 
-// SUBMIT STAGIAIRE → génère le lien mailto
-document.getElementById("btn-submit-stagiaire").addEventListener("click",()=>{
-  const unanswered=state.stagiaireAnswers.filter(a=>a===null).length;
-  if(unanswered>0){
-    if(!confirm("Il vous reste "+unanswered+" question(s) sans réponse. Voulez-vous vraiment soumettre ?"))return;
-  }
-
-  // Construire le lien de retour formateur
-  const params=new URLSearchParams();
-  params.set("prenom",state.prenom);
-  params.set("nom",state.nom);
-  params.set("formateur",state.formateur);
-  params.set("answers",state.stagiaireAnswers.map(a=>a===null?"x":a).join(","));
-  const lien=window.location.href.split("?")[0].split("#")[0]+"?"+params.toString()+"#formateur";
-
-  // Construire le sujet et corps de l'email
-  const sujet=encodeURIComponent("Évaluation de "+state.prenom+" "+state.nom+" — À compléter");
-  const corps=encodeURIComponent(
-    "Bonjour "+state.formateur+",
-
-"+
-    "Le stagiaire "+state.prenom+" "+state.nom+" vient de compléter son auto-évaluation.
-
-"+
-    "Veuillez cliquer sur le lien ci-dessous pour accéder au questionnaire et remplir votre évaluation :
-
-"+
-    lien+"
-
-"+
-    "Merci !"
-  );
-
-  const mailtoHref="mailto:"+state.formateurEmail+"?subject="+sujet+"&body="+corps;
-  document.getElementById("mailto-link").href=mailtoHref;
-  showView("confirmation");
+document.getElementById("btnSub").addEventListener("click",function(){
+var u=0; for(var i=0;i<T;i++) if(st.sa[i]===null) u++;
+if(u>0&&!confirm("Il reste "+u+" question(s) sans reponse. Soumettre quand meme ?")) return;
+var p="prenom="+encodeURIComponent(st.pr)+"&nom="+encodeURIComponent(st.no)+"&formateur="+encodeURIComponent(st.fo);
+var a=""; for(var i=0;i<T;i++) a+=(i>0?",":"")+(st.sa[i]===null?"x":st.sa[i]);
+p+="&answers="+encodeURIComponent(a);
+var lien=window.location.href.split("?")[0].split("#")[0]+"?"+p+"#formateur";
+var suj=encodeURIComponent("Evaluation de "+st.pr+" "+st.no+" - A completer");
+var bod=encodeURIComponent("Bonjour "+st.fo+",");
+bod+="%0A%0A"+encodeURIComponent("Le stagiaire "+st.pr+" "+st.no+" a complete son auto-evaluation.");
+bod+="%0A%0A"+encodeURIComponent("Cliquez sur le lien ci-dessous :");
+bod+="%0A%0A"+encodeURIComponent(lien);
+bod+="%0A%0A"+encodeURIComponent("Merci !");
+document.getElementById("mla").href="mailto:"+st.em+"?subject="+suj+"&body="+bod;
+sv("v3");
+window.scrollTo(0,0);
 });
 
-// FORMATEUR init
-function initFormateurMode(){
-  const params=new URLSearchParams(window.location.search);
-  if(!params.has("answers")||window.location.hash!=="#formateur")return false;
-  state.prenom=params.get("prenom")||"";
-  state.nom=params.get("nom")||"";
-  state.formateur=params.get("formateur")||"";
-  const raw=(params.get("answers")||"").split(",");
-  state.stagiaireAnswers=raw.map(a=>a==="x"?null:parseInt(a));
-  state.formateurAnswers=new Array(TOTAL).fill(null);
-  document.getElementById("header-info-formateur").innerHTML=
-    "Stagiaire : <strong>"+state.prenom+" "+state.nom+"</strong> &nbsp;|&nbsp; Formateur : <strong>"+state.formateur+"</strong>";
-  renderQuestionnaire("questionnaire-formateur","formateur");
-  showView("formateur");updateProgressFormateur();
-  for(let i=0;i<TOTAL;i++)updateConcordance(i);
-  return true;
+document.getElementById("btnEx").addEventListener("click",function(){
+var txt="Section;Sous-section;Question;Reponse Stagiaire;Reponse Formateur;Concordance\n";
+for(var i=0;i<T;i++){
+var sa=st.sa[i],fa=st.fa[i];
+var co=(sa!==null&&fa!==null)?(sa===fa?"Oui":"Non"):"-";
+txt+=Q[i].s+";"+Q[i].ss+";"+Q[i].q+";"+(sa!==null?C[sa]:"(sans reponse)")+";"+(fa!==null?C[fa]:"(sans reponse)")+";"+co+"\n";
+}
+var blob=new Blob(["\uFEFF"+txt],{type:"text/csv;charset=utf-8;"});
+var url=URL.createObjectURL(blob);
+var a=document.createElement("a"); a.href=url;
+a.download="Evaluation_"+st.no+"_"+st.pr+".csv";
+document.body.appendChild(a); a.click(); document.body.removeChild(a);
+URL.revokeObjectURL(url);
+});
+
+function initF(){
+if(window.location.hash!=="#formateur") return false;
+var params=new URLSearchParams(window.location.search);
+if(!params.get("answers")) return false;
+st.pr=params.get("prenom")||"";
+st.no=params.get("nom")||"";
+st.fo=params.get("formateur")||"";
+var raw=(params.get("answers")||"x,x,x,x,x,x,x").split(",");
+st.sa=[];st.fa=[];
+for(var i=0;i<T;i++){st.sa.push(raw[i]==="x"||!raw[i]?null:parseInt(raw[i]));st.fa.push(null);}
+document.getElementById("iff").innerHTML="Stagiaire : <strong>"+st.pr+" "+st.no+"</strong> | Formateur : <strong>"+st.fo+"</strong>";
+buildQ("ql2","formateur");
+upF();
+sv("v4");
+return true;
 }
 
-// EXPORT EXCEL
-document.getElementById("btn-export").addEventListener("click",()=>{
-  const unanswered=state.formateurAnswers.filter(a=>a===null).length;
-  if(unanswered>0&&!confirm("Il reste "+unanswered+" question(s) non évaluée(s). Exporter quand même ?"))return;
-  const wb=XLSX.utils.book_new();
-  const headerRows=[
-    ["Évaluation — "+state.prenom+" "+state.nom+" — Formateur : "+state.formateur],
-    [],
-    ["Section","Sous-section","Question","Réponse Stagiaire","Réponse Formateur","Concordance"]
-  ];
-  const dataRows=FLAT_QUESTIONS.map((item,idx)=>{
-    const sAns=state.stagiaireAnswers[idx],fAns=state.formateurAnswers[idx];
-    const conc=(sAns!==null&&fAns!==null)?(sAns===fAns?"Oui":"Non"):"—";
-    return[item.section,item.subsection,item.question,
-      sAns!==null?CHOICES[sAns]:"(sans réponse)",
-      fAns!==null?CHOICES[fAns]:"(sans réponse)",conc];
-  });
-  const ws=XLSX.utils.aoa_to_sheet([...headerRows,...dataRows]);
-  ws["!cols"]=[{wch:35},{wch:40},{wch:60},{wch:40},{wch:40},{wch:14}];
-  ws["!merges"]=[{s:{r:0,c:0},e:{r:0,c:5}}];
-  XLSX.utils.book_append_sheet(wb,ws,"Évaluation");
-  XLSX.writeFile(wb,"Evaluation_"+state.nom+"_"+state.prenom+"_"+state.formateur+".xlsx");
-});
-
-if(!initFormateurMode())showView("accueil");
+if(!initF()) sv("v1");
 </script>
 </body>
 </html>
