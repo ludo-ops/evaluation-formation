@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=DM+Sans:opsz,wght@9..40,300..700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 :root, [data-theme="light"] {
@@ -69,7 +68,6 @@ button{cursor:pointer;background:none;border:none;}
 :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm);}
 a,button,[role="button"],input,select{transition:color var(--transition),background var(--transition),border-color var(--transition),box-shadow var(--transition);}
 
-/* Header */
 .app-header{position:sticky;top:0;z-index:100;background:var(--color-surface);border-bottom:1px solid var(--color-border);box-shadow:var(--shadow-sm);padding:var(--space-3) var(--space-6);display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);}
 .logo{display:flex;align-items:center;gap:var(--space-3);}
 .logo-icon{width:36px;height:36px;flex-shrink:0;}
@@ -83,10 +81,8 @@ a,button,[role="button"],input,select{transition:color var(--transition),backgro
 .theme-toggle:hover{background:var(--color-surface-offset);color:var(--color-text);}
 .main{max-width:1100px;margin-inline:auto;padding:var(--space-8) var(--space-6);}
 
-/* Views */
 .view{display:none;}.view.active{display:block;}
 
-/* Landing */
 .landing-card{max-width:480px;margin-inline:auto;margin-top:var(--space-10);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-10);box-shadow:var(--shadow-md);}
 .landing-card h1{font-size:var(--text-xl);margin-bottom:var(--space-2);}
 .landing-card .subtitle{color:var(--color-text-muted);font-size:var(--text-sm);margin-bottom:var(--space-8);}
@@ -96,7 +92,6 @@ a,button,[role="button"],input,select{transition:color var(--transition),backgro
 .form-group input:focus,.form-group select:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(1,105,111,0.15);outline:none;}
 .form-group input::placeholder{color:var(--color-text-faint);}
 
-/* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);padding:var(--space-3) var(--space-6);border-radius:var(--radius-md);font-size:var(--text-sm);font-weight:600;cursor:pointer;border:none;text-decoration:none;}
 .btn-primary{background:var(--color-primary);color:#fff;box-shadow:var(--shadow-sm);}
 .btn-primary:hover{background:var(--color-primary-hover);box-shadow:var(--shadow-md);}
@@ -106,7 +101,6 @@ a,button,[role="button"],input,select{transition:color var(--transition),backgro
 .btn-full{width:100%;}
 .btn:disabled{opacity:.5;cursor:not-allowed;}
 
-/* Questionnaire header */
 .questionnaire-header{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5) var(--space-6);margin-bottom:var(--space-6);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-3);box-shadow:var(--shadow-sm);}
 .stagiaire-info{font-size:var(--text-sm);color:var(--color-text-muted);}
 .stagiaire-info strong{color:var(--color-text);font-weight:600;}
@@ -115,22 +109,18 @@ a,button,[role="button"],input,select{transition:color var(--transition),backgro
 .progress-bar{height:6px;background:var(--color-surface-dynamic);border-radius:var(--radius-full);overflow:hidden;}
 .progress-fill{height:100%;background:var(--color-primary);border-radius:var(--radius-full);transition:width .3s ease;}
 
-/* Section headers */
 .section-header{background:var(--color-primary);color:#fff;padding:var(--space-4) var(--space-6);border-radius:var(--radius-lg);margin-top:var(--space-8);margin-bottom:var(--space-1);font-size:var(--text-lg);font-weight:700;}
 .section-header:first-child{margin-top:0;}
 .subsection-header{background:var(--color-primary-highlight);color:var(--color-primary-active);padding:var(--space-3) var(--space-6);border-radius:var(--radius-md);margin-top:var(--space-4);margin-bottom:var(--space-1);font-size:var(--text-base);font-weight:600;border-left:4px solid var(--color-primary);}
 
-/* Table header */
 .table-header{display:grid;grid-template-columns:1fr 200px 200px;gap:var(--space-2);padding:var(--space-3) var(--space-4);font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-muted);border-bottom:1px solid var(--color-border);margin-bottom:var(--space-1);}
 @media(max-width:768px){.table-header{display:none;}}
 
-/* Question rows */
 .question-row{display:grid;grid-template-columns:1fr 200px 200px;gap:var(--space-2);padding:var(--space-4);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);margin-bottom:var(--space-2);}
 .question-row:hover{box-shadow:var(--shadow-sm);}
 @media(max-width:768px){.question-row{grid-template-columns:1fr;gap:var(--space-3);}}
 .question-text{font-size:var(--text-sm);color:var(--color-text);padding-right:var(--space-2);display:flex;align-items:flex-start;padding-top:2px;}
 
-/* Radio groups */
 .radio-group{display:flex;flex-direction:column;gap:var(--space-2);}
 .radio-col-locked{background:var(--color-surface-offset);border-radius:var(--radius-md);padding:var(--space-2);border:1px dashed var(--color-border);}
 .radio-col-locked .radio-group{opacity:.75;}
@@ -142,32 +132,27 @@ a,button,[role="button"],input,select{transition:color var(--transition),backgro
 .radio-option input[type="radio"]:checked + span{color:var(--color-text);font-weight:600;}
 .locked-label{font-size:var(--text-xs);color:var(--color-text-faint);text-align:center;padding:var(--space-2) var(--space-1);letter-spacing:.03em;}
 
-/* Concordance */
 .question-row.concordant{border-color:rgba(67,122,34,.4);}
 .question-row.discordant{border-color:rgba(150,66,25,.4);}
 
 /* Confirmation */
-.confirmation-card{max-width:480px;margin-inline:auto;margin-top:var(--space-16);text-align:center;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-12);box-shadow:var(--shadow-md);}
+.confirmation-card{max-width:520px;margin-inline:auto;margin-top:var(--space-10);text-align:center;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-10);box-shadow:var(--shadow-md);}
 .confirmation-icon{font-size:3rem;margin-bottom:var(--space-4);}
 .confirmation-card h2{font-size:var(--text-lg);margin-bottom:var(--space-4);}
-.confirmation-card p{color:var(--color-text-muted);font-size:var(--text-sm);}
+.confirmation-card p{color:var(--color-text-muted);font-size:var(--text-sm);margin-bottom:var(--space-6);}
+.mailto-box{background:var(--color-primary-highlight);border:1px solid var(--color-primary);border-radius:var(--radius-lg);padding:var(--space-5);margin-bottom:var(--space-6);}
+.mailto-box p{color:var(--color-primary-active);font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-3);}
+.mailto-box .btn{width:100%;font-size:var(--text-base);}
 
-/* Actions bar */
 .actions-bar{position:sticky;bottom:0;background:var(--color-surface);border-top:1px solid var(--color-border);padding:var(--space-4) var(--space-6);display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);box-shadow:0 -4px 16px rgba(40,37,29,.06);flex-wrap:wrap;}
 .actions-info{font-size:var(--text-sm);color:var(--color-text-muted);}
 .actions-buttons{display:flex;gap:var(--space-3);}
 
-/* Alert */
 .alert{padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);font-size:var(--text-sm);margin-bottom:var(--space-4);}
 .alert-error{background:var(--color-error-highlight);color:#6b1a4f;}
 [data-theme="dark"] .alert-error{color:#f0a0d0;}
 
-/* Spinner */
-.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg);}}
 .questionnaire-scroll{padding-bottom:var(--space-16);}
-
-/* Mobile */
 @media(max-width:480px){
   .main{padding:var(--space-4) var(--space-3);}
   .landing-card{padding:var(--space-6);margin-top:var(--space-6);}
@@ -247,12 +232,20 @@ a,button,[role="button"],input,select{transition:color var(--transition),backgro
   </div>
 </div>
 
-<!-- CONFIRMATION -->
+<!-- CONFIRMATION + BOUTON MAILTO -->
 <div class="view" id="view-confirmation">
   <div class="confirmation-card">
-    <div class="confirmation-icon">✅</div>
-    <h2>Réponses envoyées !</h2>
-    <p>Vos réponses ont été envoyées à votre formateur.<br><strong>Merci !</strong><br><br>Votre formateur recevra un e-mail avec un lien pour compléter son évaluation.</p>
+    <div class="confirmation-icon">📋</div>
+    <h2>Réponses prêtes à envoyer !</h2>
+    <p>Vos réponses ont été préparées. Cliquez sur le bouton ci-dessous pour ouvrir votre application mail et envoyer automatiquement le lien à votre formateur.</p>
+    <div class="mailto-box">
+      <p>📧 Cliquez pour envoyer l'email à votre formateur</p>
+      <a class="btn btn-primary" id="mailto-link" href="#">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+        Ouvrir mon application mail
+      </a>
+    </div>
+    <p style="font-size:var(--text-xs);color:var(--color-text-faint);">Fonctionne avec Gmail, Outlook, iPhone Mail et toute autre messagerie installée sur votre appareil.</p>
   </div>
 </div>
 
@@ -280,7 +273,6 @@ a,button,[role="button"],input,select{transition:color var(--transition),backgro
 </main>
 
 <script>
-// DATA
 const CHOICES = [
   "Je ne vois pas de quoi il s'agit",
   "J'ai compris le principe",
@@ -352,8 +344,7 @@ function renderQuestionnaire(containerId, mode){
   container.innerHTML="";
   let qIndex=0;
   QUESTIONNAIRE.forEach(sec=>{
-    const secEl=document.createElement("div");
-    secEl.className="section-header";secEl.textContent=sec.section;
+    const secEl=document.createElement("div");secEl.className="section-header";secEl.textContent=sec.section;
     container.appendChild(secEl);
     const th=document.createElement("div");th.className="table-header";
     th.innerHTML="<div>Question</div><div>Stagiaire</div><div>Formateur</div>";
@@ -365,12 +356,10 @@ function renderQuestionnaire(containerId, mode){
         const idx=qIndex;
         const row=document.createElement("div");row.className="question-row";row.dataset.index=idx;
         const qtd=document.createElement("div");qtd.className="question-text";qtd.textContent=q;
-        // Stagiaire column
         const stagCol=document.createElement("div");
         if(mode==="formateur")stagCol.className="radio-col-locked";
         stagCol.appendChild(buildRadioGroup("stag_"+idx,idx,"stagiaire",mode==="formateur"));
         if(mode==="formateur"){const lbl=document.createElement("div");lbl.className="locked-label";lbl.textContent="🔒 Lecture seule";stagCol.appendChild(lbl);}
-        // Formateur column
         const formCol=document.createElement("div");
         if(mode==="stagiaire"){formCol.className="radio-col-locked";formCol.innerHTML='<div class="locked-label">🔒 Réservé au formateur</div>';}
         else formCol.appendChild(buildRadioGroup("form_"+idx,idx,"formateur",false));
@@ -444,30 +433,42 @@ document.getElementById("btn-start").addEventListener("click",()=>{
   showView("stagiaire");updateProgress();
 });
 
-// SUBMIT STAGIAIRE
-document.getElementById("btn-submit-stagiaire").addEventListener("click",async()=>{
+// SUBMIT STAGIAIRE → génère le lien mailto
+document.getElementById("btn-submit-stagiaire").addEventListener("click",()=>{
   const unanswered=state.stagiaireAnswers.filter(a=>a===null).length;
   if(unanswered>0){
     if(!confirm("Il vous reste "+unanswered+" question(s) sans réponse. Voulez-vous vraiment soumettre ?"))return;
   }
-  const btn=document.getElementById("btn-submit-stagiaire");
-  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> Envoi en cours…';
+
+  // Construire le lien de retour formateur
   const params=new URLSearchParams();
-  params.set("prenom",state.prenom);params.set("nom",state.nom);params.set("formateur",state.formateur);
+  params.set("prenom",state.prenom);
+  params.set("nom",state.nom);
+  params.set("formateur",state.formateur);
   params.set("answers",state.stagiaireAnswers.map(a=>a===null?"x":a).join(","));
-  const link=window.location.href.split("?")[0].split("#")[0]+"?"+params.toString()+"#formateur";
-  try{
-    emailjs.init("nRzaUnusk-y918FLi");
-    await emailjs.send("service_wii57nk","template_ld4qrul",{
-      to_email:state.formateurEmail,formateur:state.formateur,
-      stagiaire_nom:state.prenom+" "+state.nom,lien:link
-    });
-    showView("confirmation");
-  }catch(err){
-    btn.disabled=false;
-    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg> Soumettre mes réponses';
-    alert("Erreur EmailJS : "+(err?.text||JSON.stringify(err)));
-  }
+  const lien=window.location.href.split("?")[0].split("#")[0]+"?"+params.toString()+"#formateur";
+
+  // Construire le sujet et corps de l'email
+  const sujet=encodeURIComponent("Évaluation de "+state.prenom+" "+state.nom+" — À compléter");
+  const corps=encodeURIComponent(
+    "Bonjour "+state.formateur+",
+
+"+
+    "Le stagiaire "+state.prenom+" "+state.nom+" vient de compléter son auto-évaluation.
+
+"+
+    "Veuillez cliquer sur le lien ci-dessous pour accéder au questionnaire et remplir votre évaluation :
+
+"+
+    lien+"
+
+"+
+    "Merci !"
+  );
+
+  const mailtoHref="mailto:"+state.formateurEmail+"?subject="+sujet+"&body="+corps;
+  document.getElementById("mailto-link").href=mailtoHref;
+  showView("confirmation");
 });
 
 // FORMATEUR init
@@ -512,7 +513,6 @@ document.getElementById("btn-export").addEventListener("click",()=>{
   XLSX.writeFile(wb,"Evaluation_"+state.nom+"_"+state.prenom+"_"+state.formateur+".xlsx");
 });
 
-// INIT
 if(!initFormateurMode())showView("accueil");
 </script>
 </body>
