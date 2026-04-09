@@ -59,13 +59,13 @@ main{max-width:1000px;margin:0 auto;padding:32px 16px;}
 .radar-legend span{display:flex;align-items:center;gap:5px;}
 .radar-legend .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
 </style>
-<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js">
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script>
 function drawRadar(){
 var canvas=document.getElementById("radarChart");
 if(!canvas)return;
 var wrap=canvas.parentElement;
-var avail=Math.min(wrap.offsetWidth-40,400);
-if(avail<100){setTimeout(drawRadar,300);return;}
+var avail=wrap.offsetWidth>100?Math.min(wrap.offsetWidth-40,400):400;
 canvas.width=avail;canvas.height=Math.round(avail*0.85);
 var ctx=canvas.getContext("2d");
 var W=canvas.width,H=canvas.height;
