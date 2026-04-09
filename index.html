@@ -160,7 +160,21 @@ document.getElementById("btnEx").addEventListener("click",function(){
 var btn=document.getElementById("btnEx");
 btn.disabled=true;btn.textContent="Telechargement... (3s)";
 setTimeout(function(){btn.disabled=false;btn.textContent="Exporter en Excel";},3000);
-var fname="Evaluation_"+st.no+"_"+st.pr+".xlsx";
+
+var baseName="Evaluation_"+st.no+"_"+st.pr;
+
+// --- Export radar PNG ---
+var canvas=document.getElementById("radarChart");
+if(canvas && canvas.width>10){
+var pngUrl=canvas.toDataURL("image/png");
+var dlA=document.createElement("a");
+dlA.href=pngUrl;
+dlA.download=baseName+"_Radar.png";
+document.body.appendChild(dlA);dlA.click();document.body.removeChild(dlA);
+}
+
+// --- Export xlsx ---
+var fname=baseName+".xlsx";
 var rows=[["Section","Sous-section","Question","Reponse Stagiaire","Reponse Formateur","Concordance"]];
 for(var i=0;i<T;i++){
 var sa=st.sa[i],fa=st.fa[i];
@@ -169,26 +183,27 @@ rows.push([Q[i].s,Q[i].ss,Q[i].q,(sa!==null?C[sa]:"(sans reponse)"),(fa!==null?C
 }
 var ws=XLSX.utils.aoa_to_sheet(rows);
 ws['!cols']=[{wch:45},{wch:35},{wch:55},{wch:30},{wch:30},{wch:14}];
-var hdr=["A1","B1","C1","D1","E1","F1"];
-hdr.forEach(function(addr){if(ws[addr]){ws[addr].s={font:{bold:true,color:{rgb:"FFFFFF"}},fill:{fgColor:{rgb:"E8611A"}},alignment:{horizontal:"center"}};}});
+["A1","B1","C1","D1","E1","F1"].forEach(function(addr){if(ws[addr]){ws[addr].s={font:{bold:true,color:{rgb:"FFFFFF"}},fill:{fgColor:{rgb:"E8611A"}},alignment:{horizontal:"center"}};}});
 for(var r=1;r<rows.length;r++){
 var fill=r%2===0?{fgColor:{rgb:"FDF2EC"}}:{fgColor:{rgb:"FFFFFF"}};
 ["A","B","C","D","E","F"].forEach(function(col){var addr=col+(r+1);if(ws[addr])ws[addr].s={fill:fill};});
-var cAddr="F"+(r+1);
-if(ws[cAddr]){var cv=rows[r][5];ws[cAddr].s={fill:{fgColor:{rgb:cv==="Oui"?"C8F0CA":cv==="Non"?"FACCCC":"F5F5F5"}},font:{bold:true}};}
+var cAddr="F"+(r+1);if(ws[cAddr]){var cv=rows[r][5];ws[cAddr].s={fill:{fgColor:{rgb:cv==="Oui"?"C8F0CA":cv==="Non"?"FACCCC":"F5F5F5"}},font:{bold:true}};}
 }
 ws['!autofilter']={ref:"A1:F"+(rows.length)};
 var wb=XLSX.utils.book_new();
 XLSX.utils.book_append_sheet(wb,ws,"Evaluation");
 XLSX.writeFile(wb,fname);
+
+// --- Email ---
 var dest="ludovic.bylos@isllg.be";
 var suj=encodeURIComponent("Evaluation de "+st.pr+" "+st.no+" - Formateur : "+st.fo);
 var bod=encodeURIComponent("Bonjour,");
 bod+="%0A%0A"+encodeURIComponent("Evaluation de "+st.pr+" "+st.no+" - Formateur : "+st.fo);
-bod+="%0A%0A"+encodeURIComponent("Le fichier "+fname+" vient d etre telecharge. Merci de le joindre avant d envoyer.");
+bod+="%0A%0A"+encodeURIComponent("2 fichiers ont ete telecharges : "+fname+" et "+baseName+"_Radar.png");
+bod+="%0A%0A"+encodeURIComponent("Merci de les joindre avant d envoyer.");
 bod+="%0A%0A"+encodeURIComponent("Merci !");
 setTimeout(function(){window.location.href="mailto:"+dest+"?subject="+suj+"&body="+bod;},3000);
-});
+})
 function initF(){if(window.location.hash!=="#formateur")return false;var params=new URLSearchParams(window.location.search);if(!params.get("answers"))return false;st.pr=params.get("prenom")||"";st.no=params.get("nom")||"";st.fo=params.get("formateur")||"";var raw=(params.get("answers")||"x,x,x,x,x,x,x").split(",");st.sa=[];st.fa=[];for(var i=0;i<T;i++){st.sa.push(raw[i]==="x"||!raw[i]?null:parseInt(raw[i]));st.fa.push(null);}document.getElementById("iff").innerHTML="Stagiaire : <strong>"+st.pr+" "+st.no+"</strong> | Formateur : <strong>"+st.fo+"</strong>";buildQ("ql2","formateur");upF();sv("v4");setTimeout(drawRadar,200);setTimeout(drawRadar,600);setTimeout(drawRadar,1200);return true;}
 if(!initF())sv("v1");
 </script>
