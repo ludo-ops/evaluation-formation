@@ -78,7 +78,32 @@ main{max-width:1100px;margin:0 auto;padding:32px 16px;}
 <div class="view active" id="v1"><div class="card"><h2>&#x1F4CB; Evaluation de formation</h2><div class="err" id="err"></div><div class="fg"><label><span>&#x1F464;</span>Pr&eacute;nom</label><input type="text" id="ipr" placeholder="Votre pr&eacute;nom"></div><div class="fg"><label><span>&#x1F4CB;</span>Nom</label><input type="text" id="ino" placeholder="Votre nom"></div><div class="fg"><label><span>&#x1F393;</span>Formateur</label><select id="ifo"><option value="">-- S&eacute;lectionnez --</option><option value="Ludo" data-email="ludolud121@gmail.com">Ludo</option><option value="Mich" data-email="bylosludo@gmail.com">Mich</option><option value="Alex" data-email="ludovicbylos121@gmail.com">Alex</option></select></div><button class="btn bp" id="btnS">Commencer l'&eacute;valuation</button></div></div>
 <div class="view" id="v2"><div class="qh"><div class="qi" id="is"></div><div style="display:flex;align-items:center;gap:10px;"><span class="score-badge" id="sc1"></span><div><div class="pl" id="pl1">0 / 181</div><div class="pb"><div class="pf" id="pf1" style="width:0%"></div></div></div></div></div><div id="ql1-spinner" class="spinner-wrap"><div class="spinner"></div></div><div class="mb80" id="ql1"></div><div class="act"><span>R&eacute;pondez &agrave; toutes les questions.</span><button class="btn bp" id="btnSub">Soumettre</button></div></div>
 <div class="view" id="v3"><div class="cc"><div class="ic">&#128203;</div><h2>R&eacute;ponses pr&ecirc;tes !</h2><p>Cliquez ci-dessous pour ouvrir votre messagerie avec le lien pour votre formateur.</p><div class="mb-box"><p>Envoyer l'email &agrave; votre formateur</p><a class="btn bp" id="mla" href="#">Ouvrir mon application mail</a></div><p class="hint">Compatible Gmail, Outlook, iPhone Mail.</p></div></div>
-<div class="view" id="v4"><div class="qh"><div class="qi" id="iff"></div><div style="display:flex;align-items:center;gap:10px;"><span class="score-badge" id="sc2"></span><div><div class="pl" id="pl2">0 / 181</div><div class="pb"><div class="pf" id="pf2" style="width:0%"></div></div></div></div></div><div class="radar-wrap"><h3>&#127760; Radar des comp&eacute;tences</h3><canvas id="radarChart" width="500" height="425"></canvas><div class="radar-legend"><span><div class="dot" style="background:#E8611A"></div>Stagiaire</span><span><div class="dot" style="background:#3A9B3C"></div>Formateur</span></div></div><div class="mb80" id="ql2"></div><div class="act"><span>Mode Formateur &mdash; Stagiaire en lecture seule.</span><button class="btn bs" id="btnEx">Exporter en Excel</button></div></div>
+<div class="view" id="v4"><div class="qh"><div class="qi" id="iff"></div><div style="display:flex;align-items:center;gap:10px;"><span class="score-badge" id="sc2"></span><div><div class="pl" id="pl2">0 / 181</div><div class="pb"><div class="pf" id="pf2" style="width:0%"></div></div></div></div></div><div class="radar-wrap"><h3>&#127760; Radar des comp&eacute;tences</h3><canvas id="radarChart" width="500" height="425"></canvas><div class="radar-legend"><span><div class="dot" style="background:#E8611A"></div>Stagiaire</span><span><div class="dot" style="background:#3A9B3C"></div>Formateur</span></div></div><div class="mb80" id="ql2"></div><div class="act"><span>Mode Formateur &mdash; Stagiaire en lecture seule.</span><div style="display:flex;gap:10px;"><button class="btn" style="background:#3A9B3C;color:#fff;width:auto;" id="btnRecap">&#x1F4CA; Voir le r&eacute;cap</button><button class="btn bs" style="width:auto;" id="btnEx">Exporter en Excel</button></div></div></div>
+
+<div class="view" id="v5">
+  <div style="max-width:700px;margin:0 auto;">
+    <div style="background:#fff;border:1px solid #ddd;border-radius:12px;padding:24px;margin-bottom:18px;">
+      <h2 style="font-size:18px;margin-bottom:6px;">&#x1F4CA; R&eacute;cap de l'&eacute;valuation</h2>
+      <div id="recap-info" style="font-size:13px;color:#666;margin-bottom:20px;"></div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;" id="recap-table">
+        <thead>
+          <tr style="background:#E8611A;color:#fff;">
+            <th style="padding:9px 12px;text-align:left;border-radius:6px 0 0 0;">Section</th>
+            <th style="padding:9px 12px;text-align:center;">Moy. Stagiaire</th>
+            <th style="padding:9px 12px;text-align:center;">Moy. Formateur</th>
+            <th style="padding:9px 12px;text-align:center;border-radius:0 6px 0 0;">Concordance</th>
+          </tr>
+        </thead>
+        <tbody id="recap-body"></tbody>
+      </table>
+      <div id="recap-global" style="margin-top:16px;padding:14px;background:#f9f9f9;border-radius:8px;font-size:13px;"></div>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:flex-end;">
+      <button class="btn" style="background:#f0f0f0;color:#333;width:auto;" id="btnBackToQ">&#x276E; Retour aux questions</button>
+      <button class="btn bs" id="btnExRecap">Exporter en Excel</button>
+    </div>
+  </div>
+</div>
 </main>
 <script>
 var C = ["Je ne vois pas de quoi il s agit","J ai compris le principe","Je le fais avec le formateur","Je le fais en autonomie"];
@@ -337,7 +362,7 @@ function buildCol(idx,who,locked){
       if(locked)inp.disabled=true;
       if(ans[idx]===ci2)inp.checked=true;
       if(!locked){inp.addEventListener("change",function(){
-        if(who==="s"){st.sa[idx]=ci2;upS();document.getElementById("r"+idx).classList.add("answered-s");
+        if(who==="s"){st.sa[idx]=ci2;upS();document.getElementById("r"+idx).classList.add("answered-s");localStorage.setItem("evalpro_sa",JSON.stringify(st.sa));localStorage.setItem("evalpro_meta",JSON.stringify({pr:st.pr,no:st.no,fo:st.fo,em:st.em,start:st.startTime}));
           var nxt=null;for(var k=idx+1;k<T;k++){if(st.sa[k]===null){nxt=k;break;}}
           if(nxt!==null){var nr=document.getElementById("r"+nxt);if(nr)setTimeout(function(){nr.scrollIntoView({behavior:"smooth",block:"center"});},200);}
         }else{st.fa[idx]=ci2;upF();drawRadar();document.getElementById("r"+idx).classList.add("answered-f");
@@ -386,6 +411,18 @@ document.getElementById("btnS").addEventListener("click",function(){
   st.pr=pr;st.no=no;st.fo=fo;st.em=em;
   st.sa=[];st.fa=[];for(var i=0;i<T;i++){st.sa.push(null);st.fa.push(null);}st.startTime=Date.now();
   document.getElementById("is").innerHTML="Stagiaire : <strong>"+pr+" "+no+"</strong> | Formateur : <strong>"+fo+"</strong>";
+  var saved=localStorage.getItem("evalpro_sa");
+  var savedMeta=localStorage.getItem("evalpro_meta");
+  if(saved&&savedMeta){
+    var meta=JSON.parse(savedMeta);
+    if(meta.pr===pr&&meta.no===no&&meta.fo===fo){
+      if(confirm("Des reponses sauvegardees ont ete trouvees pour "+pr+" "+no+". Reprendre ou recommencer ?\n\nOK = Reprendre | Annuler = Recommencer")){
+        st.sa=JSON.parse(saved);st.startTime=meta.start||Date.now();
+        buildQ("ql1","stagiaire");upS();sv("v2");window.scrollTo(0,0);return;
+      }
+    }
+  }
+  localStorage.removeItem("evalpro_sa");localStorage.removeItem("evalpro_meta");
   buildQ("ql1","stagiaire");upS();sv("v2");window.scrollTo(0,0);
 });
 
@@ -394,12 +431,12 @@ document.getElementById("btnSub").addEventListener("click",function(){
   if(u>0&&!confirm("Il reste "+u+" question(s) sans reponse. Soumettre quand meme ?"))return;
   var p="prenom="+encodeURIComponent(st.pr)+"&nom="+encodeURIComponent(st.no)+"&formateur="+encodeURIComponent(st.fo);
   var a="";for(var i=0;i<T;i++)a+=(i>0?",":"")+(st.sa[i]===null?"x":st.sa[i]);
-  var elapsed=Math.round((Date.now()-st.startTime)/1000);p+="&answers="+encodeURIComponent(a)+"&temps="+elapsed+"&mode=formateur";
+  var elapsed=Math.round((Date.now()-st.startTime)/1000);var dateStr=new Date().toLocaleDateString("fr-BE",{day:"2-digit",month:"2-digit",year:"numeric"});var heureStr=new Date().toLocaleTimeString("fr-BE",{hour:"2-digit",minute:"2-digit"});p+="&answers="+encodeURIComponent(a)+"&temps="+elapsed+"&date="+encodeURIComponent(dateStr)+"&heure="+encodeURIComponent(heureStr)+"&mode=formateur";
   var lien=window.location.href.split("?")[0].split("#")[0]+"?"+p;
   var suj=encodeURIComponent("Evaluation de "+st.pr+" "+st.no+" - A completer");
   var bod=encodeURIComponent("Bonjour "+st.fo+",\n\nLe stagiaire "+st.pr+" "+st.no+" a complete son auto-evaluation.\n\nCliquez sur le lien ci-dessous :\n\n"+lien+"\n\nMerci !");
   document.getElementById("mla").href="mailto:"+st.em+"?subject="+suj+"&body="+bod;
-  sv("v3");window.scrollTo(0,0);
+  localStorage.removeItem("evalpro_sa");localStorage.removeItem("evalpro_meta");sv("v3");window.scrollTo(0,0);
 });
 
 document.getElementById("btnEx").addEventListener("click",function(){
@@ -436,13 +473,51 @@ function initF(){
   var tcol=tsec>900?"#1a6b1c":tsec>300?"#856404":"#7b0000";
   var tbg=tsec>900?"#C8F0CA":tsec>300?"#fff3cd":"#FACCCC";
   var tico=tsec>900?"&#x1F7E2;":tsec>300?"&#x1F7E1;":"&#x1F534;";
-  document.getElementById("iff").innerHTML="Stagiaire : <strong>"+st.pr+" "+st.no+"</strong> | Formateur : <strong>"+st.fo+"</strong><span style=\"margin-left:14px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;background:"+tbg+";color:"+tcol+"\">"+tico+" Temps : "+tstr+"</span>";
+  var dateAff=p.get("date")||"";var heureAff=p.get("heure")||"";var dateLabel=dateAff?"<span style='margin-left:10px;font-size:12px;color:#888;'>&#x1F4C5; "+dateAff+" &agrave; "+heureAff+"</span>":"";document.getElementById("iff").innerHTML="Stagiaire : <strong>"+st.pr+" "+st.no+"</strong> | Formateur : <strong>"+st.fo+"</strong><span style=\"margin-left:14px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;background:"+tbg+";color:"+tcol+"\">"+tico+" Temps : "+tstr+"</span>"+dateLabel;
   buildQ("ql2","formateur");upF();sv("v4");
   setTimeout(drawRadar,500);setTimeout(drawRadar,1200);
   return true;
 }
 
 if(!initF())sv("v1");
+document.getElementById('btnRecap').addEventListener('click',function(){showRecap();sv('v5');window.scrollTo(0,0);});
+
+
+function showRecap() {
+  var sections = [...new Set(Q.map(function(q){return q.s;}))];
+  var body = document.getElementById("recap-body");
+  body.innerHTML = "";
+  var totalOk=0, totalN=0;
+  sections.forEach(function(sec, idx) {
+    var sVals=[], fVals=[], ok=0, tot=0;
+    Q.forEach(function(q,i){
+      if(q.s===sec){
+        if(st.sa[i]!==null)sVals.push(st.sa[i]);
+        if(st.fa[i]!==null){fVals.push(st.fa[i]);tot++;if(st.sa[i]===st.fa[i])ok++;}
+      }
+    });
+    var sAvg=sVals.length?(sVals.reduce(function(a,b){return a+b;},0)/sVals.length).toFixed(2):"—";
+    var fAvg=fVals.length?(fVals.reduce(function(a,b){return a+b;},0)/fVals.length).toFixed(2):"—";
+    var conc=tot>0?Math.round(ok/tot*100)+"%":"—";
+    var concCol=tot>0?(ok/tot>=0.7?"#C8F0CA":ok/tot>=0.4?"#fff3cd":"#FACCCC"):"#f5f5f5";
+    totalOk+=ok; totalN+=tot;
+    var tr=document.createElement("tr");
+    tr.style.background=idx%2===0?"#fff":"#fdf2ec";
+    tr.innerHTML="<td style='padding:9px 12px;font-weight:700;'>"+sec+"</td><td style='padding:9px 12px;text-align:center;'>"+sAvg+"/3</td><td style='padding:9px 12px;text-align:center;'>"+fAvg+"/3</td><td style='padding:9px 12px;text-align:center;background:"+concCol+";font-weight:700;'>"+conc+"</td>";
+    body.appendChild(tr);
+  });
+  var gPct=totalN>0?Math.round(totalOk/totalN*100):0;
+  var gCol=gPct>=70?"#1a6b1c":gPct>=40?"#856404":"#7b0000";
+  var gBg=gPct>=70?"#C8F0CA":gPct>=40?"#fff3cd":"#FACCCC";
+  document.getElementById("recap-global").innerHTML="<strong>Concordance globale : <span style='color:"+gCol+";background:"+gBg+";padding:2px 10px;border-radius:99px;'>"+gPct+"%</span></strong> &nbsp;|&nbsp; "+totalOk+" accords sur "+totalN+" questions &eacute;valu&eacute;es";
+  document.getElementById("recap-info").innerHTML="Stagiaire : <strong>"+st.pr+" "+st.no+"</strong> &nbsp;|&nbsp; Formateur : <strong>"+st.fo+"</strong>";
+}
+
+document.getElementById("btnBackToQ").addEventListener("click",function(){sv("v4");});
+
+document.getElementById("btnExRecap").addEventListener("click",function(){
+  document.getElementById("btnEx").click();
+});
 </script>
 </body>
 </html>
