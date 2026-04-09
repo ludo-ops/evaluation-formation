@@ -88,7 +88,16 @@ main{max-width:1100px;margin:0 auto;padding:32px 16px;}
 .recap-tbl td:not(:first-child){text-align:center;}
 .recap-tbl tr:nth-child(even) td{background:#fdf2ec;}
 .recap-global{margin-top:14px;padding:12px 16px;background:#f9f9f9;border-radius:8px;font-size:13px;}
-@media(max-width:700px){.ch{display:none;} .qr{grid-template-columns:1fr;} .pb{width:120px;}}
+@media(max-width:700px){
+  .ch{display:none;}
+  .qr{grid-template-columns:1fr;}
+  .pb{width:120px;}
+  .act{flex-direction:column;align-items:stretch;padding:8px 12px;gap:6px;}
+  .act-left{justify-content:center;}
+  .act-right{flex-wrap:wrap;justify-content:center;gap:6px;}
+  .act-right .btn,.act-right .btn-miss{font-size:11px;padding:7px 10px;flex:1;min-width:120px;text-align:center;}
+  .cnt{text-align:center;font-size:11px;}
+}
 </style>
 </head>
 <body>
