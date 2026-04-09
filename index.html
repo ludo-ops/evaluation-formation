@@ -384,7 +384,7 @@ document.getElementById("btnS").addEventListener("click",function(){
   if(!pr||!no||!fo){er.style.display="block";er.textContent="Veuillez remplir tous les champs.";return;}
   er.style.display="none";
   st.pr=pr;st.no=no;st.fo=fo;st.em=em;
-  st.sa=[];st.fa=[];for(var i=0;i<T;i++){st.sa.push(null);st.fa.push(null);}
+  st.sa=[];st.fa=[];for(var i=0;i<T;i++){st.sa.push(null);st.fa.push(null);}st.startTime=Date.now();
   document.getElementById("is").innerHTML="Stagiaire : <strong>"+pr+" "+no+"</strong> | Formateur : <strong>"+fo+"</strong>";
   buildQ("ql1","stagiaire");upS();sv("v2");window.scrollTo(0,0);
 });
@@ -394,7 +394,7 @@ document.getElementById("btnSub").addEventListener("click",function(){
   if(u>0&&!confirm("Il reste "+u+" question(s) sans reponse. Soumettre quand meme ?"))return;
   var p="prenom="+encodeURIComponent(st.pr)+"&nom="+encodeURIComponent(st.no)+"&formateur="+encodeURIComponent(st.fo);
   var a="";for(var i=0;i<T;i++)a+=(i>0?",":"")+(st.sa[i]===null?"x":st.sa[i]);
-  p+="&answers="+encodeURIComponent(a)+"&mode=formateur";
+  var elapsed=Math.round((Date.now()-st.startTime)/1000);p+="&answers="+encodeURIComponent(a)+"&temps="+elapsed+"&mode=formateur";
   var lien=window.location.href.split("?")[0].split("#")[0]+"?"+p;
   var suj=encodeURIComponent("Evaluation de "+st.pr+" "+st.no+" - A completer");
   var bod=encodeURIComponent("Bonjour "+st.fo+",\n\nLe stagiaire "+st.pr+" "+st.no+" a complete son auto-evaluation.\n\nCliquez sur le lien ci-dessous :\n\n"+lien+"\n\nMerci !");
@@ -430,7 +430,13 @@ function initF(){
   var raw=(p.get("answers")||"").split(",");
   st.sa=[];st.fa=[];
   for(var i=0;i<T;i++){st.sa.push(raw[i]==="x"||!raw[i]?null:parseInt(raw[i]));st.fa.push(null);}
-  document.getElementById("iff").innerHTML="Stagiaire : <strong>"+st.pr+" "+st.no+"</strong> | Formateur : <strong>"+st.fo+"</strong>";
+  var tsec=parseInt(p.get("temps")||"0");
+  var tmin=Math.floor(tsec/60),trem=tsec%60;
+  var tstr=tmin+"m "+trem+"s";
+  var tcol=tsec>900?"#1a6b1c":tsec>300?"#856404":"#7b0000";
+  var tbg=tsec>900?"#C8F0CA":tsec>300?"#fff3cd":"#FACCCC";
+  var tico=tsec>900?"&#x1F7E2;":tsec>300?"&#x1F7E1;":"&#x1F534;";
+  document.getElementById("iff").innerHTML="Stagiaire : <strong>"+st.pr+" "+st.no+"</strong> | Formateur : <strong>"+st.fo+"</strong><span style=\"margin-left:14px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;background:"+tbg+";color:"+tcol+"\">"+tico+" Temps : "+tstr+"</span>";
   buildQ("ql2","formateur");upF();sv("v4");
   setTimeout(drawRadar,500);setTimeout(drawRadar,1200);
   return true;
